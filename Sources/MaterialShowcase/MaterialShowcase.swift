@@ -574,6 +574,9 @@ extension MaterialShowcase {
       }
     } else {
       width = containerView.frame.size.width - (xPosition*2)
+
+      // Fix bug for invalid positioning of description label
+      /*
       if backgroundView.frame.center.x - targetHolderRadius < 0 {
         width = width - abs(backgroundView.frame.origin.x)
       } else if (backgroundView.frame.center.x + targetHolderRadius >
@@ -581,6 +584,7 @@ extension MaterialShowcase {
         width = width - abs(backgroundView.frame.origin.x)
         xPosition = xPosition + abs(backgroundView.frame.origin.x)
       }
+      */
       
       //Updates horizontal parameters
       instructionView.frame = CGRect(x: xPosition,
@@ -624,12 +628,15 @@ extension MaterialShowcase {
     if animated {
       targetRippleView.removeFromSuperview()
       UIView.animateKeyframes(withDuration: aniGoOutDuration, delay: 0, options: [.calculationModeLinear], animations: {
-        UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 3/5, animations: {
+        UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 1.0/5.0, animations: {
+          self.instructionView.alpha = 0
+        })
+        UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 2.0/5.0, animations: {
           self.targetHolderView.transform = CGAffineTransform(scaleX: 0.4, y: 0.4)
           self.backgroundView.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
           self.backgroundView.alpha = 0
         })
-        UIView.addKeyframe(withRelativeStartTime: 3/5, relativeDuration: 2/5, animations: {
+        UIView.addKeyframe(withRelativeStartTime: 3.0/5.0, relativeDuration: 2.0/5.0, animations: {
           self.alpha = 0
         })
       }, completion: { (success) in
