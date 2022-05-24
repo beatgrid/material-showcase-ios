@@ -630,9 +630,9 @@ extension MaterialShowcase {
       UIView.animateKeyframes(withDuration: aniGoOutDuration, delay: 0, options: [.calculationModeLinear], animations: {
         UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 1.0/5.0, animations: {
           self.instructionView.alpha = 0
+          self.targetHolderView.alpha = 0
         })
         UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 2.0/5.0, animations: {
-          self.targetHolderView.transform = CGAffineTransform(scaleX: 0.4, y: 0.4)
           self.backgroundView.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
           self.backgroundView.alpha = 0
         })
