@@ -575,16 +575,14 @@ extension MaterialShowcase {
     } else {
       width = containerView.frame.size.width - (xPosition*2)
 
-      // Fix bug for invalid positioning of description label
-      /*
-      if backgroundView.frame.center.x - targetHolderRadius < 0 {
-        width = width - abs(backgroundView.frame.origin.x)
-      } else if (backgroundView.frame.center.x + targetHolderRadius >
-        UIScreen.main.bounds.width) {
-        width = width - abs(backgroundView.frame.origin.x)
-        xPosition = xPosition + abs(backgroundView.frame.origin.x)
+      if targetHolderRadius - backgroundView.frame.center.x > 0 {
+        let diff = targetHolderRadius - backgroundView.frame.center.x
+        width -= diff
+      } else if backgroundView.frame.center.x + targetHolderRadius > UIScreen.main.bounds.width {
+        let diff = backgroundView.frame.center.x + targetHolderRadius - UIScreen.main.bounds.width
+        width -= diff
+        xPosition += diff
       }
-      */
       
       //Updates horizontal parameters
       instructionView.frame = CGRect(x: xPosition,
