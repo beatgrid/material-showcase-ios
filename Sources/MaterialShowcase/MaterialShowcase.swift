@@ -218,13 +218,13 @@ extension MaterialShowcase {
     guard let targetView = self.targetView else {
       return
     }
-    initViews(parentView: parentView, targetView: targetView)
-    alpha = 0.0
     parentView.addSubview(self)
     self.frame = parentView.bounds
     self.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+    self.alpha = 0.0
+    initViews(parentView: parentView, targetView: targetView)
     layoutIfNeeded()
-    
+
     let scale = TARGET_HOLDER_RADIUS / (backgroundView.frame.width / 2)
     let center = backgroundView.center
     
