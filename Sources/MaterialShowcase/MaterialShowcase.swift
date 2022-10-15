@@ -7,7 +7,7 @@
 //
 import UIKit
 
-@objc public protocol MaterialShowcaseDelegate: class {
+@objc public protocol MaterialShowcaseDelegate: AnyObject {
   @objc optional func showCaseWillDismiss(showcase: MaterialShowcase, didTapTarget:Bool)
   @objc optional func showCaseDidDismiss(showcase: MaterialShowcase, didTapTarget:Bool)
 }
@@ -62,7 +62,6 @@ open class MaterialShowcase: UIView {
   // MARK: Private view properties
   var closeButton : UIButton!
   
-  var containerView: UIView!
   var targetView: UIView!
   var backgroundView: UIView!
   var targetHolderView: UIView!
@@ -126,9 +125,8 @@ open class MaterialShowcase: UIView {
   
   public init() {
     // Create frame
-    let frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
-    super.init(frame: frame)
-    
+    super.init(frame: .zero)
+    self.autoresizingMask = [.flexibleWidth, .flexibleHeight]
     configure()
   }
   
@@ -216,10 +214,15 @@ extension MaterialShowcase {
   }
   
   /// Shows it over current screen after completing setup process
-  @objc public func show(animated: Bool = true,hasShadow: Bool = true, hasSkipButton: Bool = false, completion handler: (()-> Void)?) {
-    initViews()
+  @objc public func show(parentView: UIView, animated: Bool = true, hasShadow: Bool = true, hasSkipButton: Bool = false, completion handler: (()-> Void)?) {
+    guard let targetView = self.targetView else {
+      return
+    }
+    initViews(parentView: parentView, targetView: targetView)
     alpha = 0.0
-    containerView.addSubview(self)
+    parentView.addSubview(self)
+    self.frame = parentView.bounds
+    self.autoresizingMask = [.flexibleWidth, .flexibleHeight]
     layoutIfNeeded()
     
     let scale = TARGET_HOLDER_RADIUS / (backgroundView.frame.width / 2)
@@ -319,10 +322,6 @@ extension MaterialShowcase {
   /// Initializes default view properties
   func configure() {
     backgroundColor = UIColor.clear
-    guard let window = UIApplication.shared.keyWindow else {
-      return
-    }
-    containerView = window
     setDefaultProperties()
   }
   
@@ -367,8 +366,8 @@ extension MaterialShowcase {
     }, completion: nil)
   }
   
-  func initViews() {
-    let center = calculateCenter(at: targetView, to: containerView)
+  func initViews(parentView: UIView, targetView: UIView) {
+    let center = calculateCenter(at: targetView, to: parentView)
     
     addTargetRipple(at: center)
     addTargetHolder(at: center)
@@ -515,6 +514,9 @@ extension MaterialShowcase {
   
   /// Configures and adds primary label view
   private func addInstructionView(at center: CGPoint) {
+    guard let containerView = self.superview else {
+      return
+    }
     instructionView = MaterialShowcaseInstructionView()
     
     instructionView.primaryTextAlignment = primaryTextAlignment

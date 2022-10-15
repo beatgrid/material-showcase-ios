@@ -13,6 +13,8 @@ public class MaterialShowcaseSequence {
   var showcaseArray : [MaterialShowcase] = []
   var currentCase : Int = 0
   var key : String?
+
+  private weak var parentView: UIView?
   
   public init() { }
   
@@ -20,11 +22,12 @@ public class MaterialShowcaseSequence {
     showcaseArray.append(showcase)
     return self
   }
-  public func start() {
+  public func start(parentView: UIView) {
     guard !getUserState(key: self.key) else {
       return
     }
-    showcaseArray.first?.show(completion: increase)
+    self.parentView = parentView
+    showcaseArray.first?.show(parentView: parentView, completion: increase)
   }
   func increase() -> Void {
     self.currentCase += 1
@@ -60,7 +63,8 @@ public class MaterialShowcaseSequence {
       UserDefaults.standard.set(true, forKey: key!)
       return
     }
-    showcaseArray[currentCase].show(completion: self.increase)
+    guard let parentView = self.parentView else { return }
+    showcaseArray[currentCase].show(parentView: parentView, completion: self.increase)
   }
   
 }

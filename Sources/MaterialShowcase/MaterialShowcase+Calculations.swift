@@ -12,10 +12,14 @@ import UIKit
 extension MaterialShowcase {
   
   internal func isInGutter(center: CGPoint) -> Bool {
+    guard let containerView = self.superview else {
+      return false
+    }
     return center.y < offsetThreshold || containerView.frame.height - center.y < offsetThreshold
   }
   
   internal func getOuterCircleCenterPoint(for target: UIView) -> CGPoint {
+    guard let containerView = self.superview else { return target.center }
     if isInGutter(center: target.center) {
       return target.center
     }

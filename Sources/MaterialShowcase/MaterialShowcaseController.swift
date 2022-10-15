@@ -8,7 +8,7 @@
 
 import Foundation
 
-public protocol MaterialShowcaseControllerDelegate: class {
+public protocol MaterialShowcaseControllerDelegate: AnyObject {
   
   func materialShowcaseController(_ materialShowcaseController: MaterialShowcaseController,
                                   materialShowcaseWillDisappear materialShowcase: MaterialShowcase,
@@ -33,7 +33,7 @@ public extension MaterialShowcaseControllerDelegate {
   }
 }
 
-public protocol MaterialShowcaseControllerDataSource: class {
+public protocol MaterialShowcaseControllerDataSource: AnyObject {
   func numberOfShowcases(for materialShowcaseController: MaterialShowcaseController) -> Int
   
   func materialShowcaseController(_ materialShowcaseController: MaterialShowcaseController,
@@ -48,13 +48,15 @@ open class MaterialShowcaseController {
   public var started = false
   public var currentIndex = -1
   public weak var currentShowcase: MaterialShowcase?
+  private weak var parentView: UIView?
   
   public init() {
     
   }
   
-  open func start() {
+  open func start(parentView: UIView) {
     started = true
+    self.parentView = parentView
     nextShowcase()
   }
   
@@ -69,6 +71,9 @@ open class MaterialShowcaseController {
       currentShowcase.completeShowcase(animated: true)
       self.currentShowcase = nil
     }
+    guard let parentView = self.parentView else {
+       return
+    }
     let numberOfShowcases = dataSource?.numberOfShowcases(for: self) ?? 0
     currentIndex += 1
     let showcase = dataSource?.materialShowcaseController(self, showcaseAt: currentIndex)
@@ -79,7 +84,7 @@ open class MaterialShowcaseController {
       return
     }
     currentShowcase = showcase
-    showcase?.show(completion: nil)
+    showcase?.show(parentView: parentView, completion: nil)
   }
 }
 
