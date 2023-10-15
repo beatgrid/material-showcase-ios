@@ -18,7 +18,7 @@ public class MaterialShowcaseInstructionView: UIView {
   internal static let PRIMARY_DEFAULT_TEXT = "Awesome action"
   internal static let SECONDARY_DEFAULT_TEXT = "Tap here to do some awesome thing"
 
-  private static let LABEL_SPACING: CGFloat = 4.0
+  internal static let DEFAULT_LABEL_SPACING: CGFloat = 8.0
   
   public var primaryLabel: UILabel!
   public var secondaryLabel: UILabel!
@@ -34,6 +34,7 @@ public class MaterialShowcaseInstructionView: UIView {
   public var secondaryTextFont: UIFont?
   public var primaryTextAlignment: NSTextAlignment!
   public var secondaryTextAlignment: NSTextAlignment!
+  public var labelSpacing: CGFloat = MaterialShowcaseInstructionView.DEFAULT_LABEL_SPACING
   
   public init() {
     // Create frame
@@ -108,7 +109,7 @@ public class MaterialShowcaseInstructionView: UIView {
     secondaryLabel.numberOfLines = 0
     
     secondaryLabel.frame = CGRect(x: 0,
-                                  y: primaryLabel.frame.height + MaterialShowcaseInstructionView.LABEL_SPACING,
+                                  y: primaryLabel.frame.height + labelSpacing,
                                   width: frame.width,
                                   height: 0)
     secondaryLabel.sizeToFitHeight()

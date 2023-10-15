@@ -110,6 +110,7 @@ open class MaterialShowcase: UIView {
   @objc public var secondaryTextColor: UIColor!
   @objc public var primaryTextSize: CGFloat = 0.0
   @objc public var secondaryTextSize: CGFloat = 0.0
+  @objc public var textVerticalSpacing: CGFloat?
   @objc public var primaryTextFont: UIFont?
   @objc public var secondaryTextFont: UIFont?
   @objc public var primaryTextAlignment: NSTextAlignment = .left
@@ -340,6 +341,7 @@ extension MaterialShowcase {
     secondaryTextColor = MaterialShowcaseInstructionView.SECONDARY_TEXT_COLOR
     primaryTextSize = MaterialShowcaseInstructionView.PRIMARY_TEXT_SIZE
     secondaryTextSize = MaterialShowcaseInstructionView.SECONDARY_TEXT_SIZE
+
     // Animation
     aniComeInDuration = ANI_COMEIN_DURATION
     aniGoOutDuration = ANI_GOOUT_DURATION
@@ -530,6 +532,10 @@ extension MaterialShowcase {
     instructionView.secondaryTextSize = secondaryTextSize
     instructionView.secondaryTextColor = secondaryTextColor
     instructionView.secondaryText = secondaryText
+
+    if let spacing = textVerticalSpacing {
+      instructionView.labelSpacing = spacing
+    }
     
     // Calculate x position
     var xPosition = LABEL_MARGIN
