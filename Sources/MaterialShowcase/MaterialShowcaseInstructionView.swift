@@ -17,6 +17,8 @@ public class MaterialShowcaseInstructionView: UIView {
   internal static let SECONDARY_TEXT_COLOR = UIColor.white.withAlphaComponent(0.87)
   internal static let PRIMARY_DEFAULT_TEXT = "Awesome action"
   internal static let SECONDARY_DEFAULT_TEXT = "Tap here to do some awesome thing"
+
+  private static let LABEL_SPACING: CGFloat = 4.0
   
   public var primaryLabel: UILabel!
   public var secondaryLabel: UILabel!
@@ -106,12 +108,12 @@ public class MaterialShowcaseInstructionView: UIView {
     secondaryLabel.numberOfLines = 0
     
     secondaryLabel.frame = CGRect(x: 0,
-                                  y: primaryLabel.frame.height,
+                                  y: primaryLabel.frame.height + MaterialShowcaseInstructionView.LABEL_SPACING,
                                   width: frame.width,
                                   height: 0)
     secondaryLabel.sizeToFitHeight()
     addSubview(secondaryLabel)
-    frame = CGRect(x: frame.minX, y: frame.minY, width: frame.width, height: primaryLabel.frame.height + secondaryLabel.frame.height)
+    frame = CGRect(x: frame.minX, y: frame.minY, width: frame.width, height: secondaryLabel.frame.maxY)
   }
   
   
