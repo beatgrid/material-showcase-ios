@@ -6,7 +6,7 @@
 //  Copyright © 2017 Aromajoin. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 public protocol MaterialShowcaseControllerDelegate: AnyObject {
   
